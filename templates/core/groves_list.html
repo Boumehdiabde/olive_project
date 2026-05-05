@@ -1,0 +1,128 @@
+{% extends "core/base.html" %}
+
+{% block title %}Groves - Olive Project{% endblock %}
+
+{% block extra_css %}
+<style>
+    .filters {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .filters select {
+        padding: 8px 15px;
+        border: 2px solid #667eea;
+        border-radius: 5px;
+        font-size: 1em;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+    }
+    
+    th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+    }
+    
+    td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    tr:hover {
+        background: #f8f9fa;
+    }
+    
+    .status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+    }
+    
+    .status.active {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .status.dormant {
+        background: #fff3cd;
+        color: #856404;
+    }
+    
+    .status.new {
+        background: #cce5ff;
+        color: #004085;
+    }
+    
+    a {
+        color: #667eea;
+        text-decoration: none;
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>Olive Groves</h2>
+
+<div class="filters">
+    <form method="get" style="display: flex; gap: 10px; align-items: center;">
+        <label for="status">Filter by Status:</label>
+        <select name="status" id="status">
+            <option value="">All Groves</option>
+            {% for value, label in statuses %}
+                <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn">Filter</button>
+    </form>
+</div>
+
+{% if groves %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Variety</th>
+                <th>Trees</th>
+                <th>Area (ha)</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grove in groves %}
+                <tr>
+                    <td>{{ grove.name }}</td>
+                    <td>{{ grove.location }}</td>
+                    <td>{{ grove.variety }}</td>
+                    <td>{{ grove.tree_count }}</td>
+                    <td>{{ grove.area_hectares }}</td>
+                    <td>
+                        <span class="status {{ grove.status|lower }}">{{ grove.get_status_display }}</span>
+                    </td>
+                    <td>
+                        <a href="{% url 'grove_detail' grove.id %}">View</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p style="color: #999; margin-top: 20px;">No groves found. <a href="{% url 'admin:core_grove_add' %}">Create a new grove</a></p>
+{% endif %}
+{% endblock %}

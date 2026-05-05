@@ -1,0 +1,168 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ grove.name }} - Olive Project{% endblock %}
+
+{% block extra_css %}
+<style>
+    .grove-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+    }
+    
+    .grove-header h1 {
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+    
+    .grove-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .info-item {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 5px;
+    }
+    
+    .info-item label {
+        opacity: 0.9;
+        font-size: 0.9em;
+    }
+    
+    .info-item value {
+        display: block;
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+    
+    .section {
+        margin: 30px 0;
+    }
+    
+    .section h2 {
+        color: #667eea;
+        border-bottom: 2px solid #667eea;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .item-list {
+        display: grid;
+        gap: 10px;
+    }
+    
+    .item {
+        background: #f8f9fa;
+        padding: 15px;
+        border-left: 4px solid #667eea;
+        border-radius: 5px;
+    }
+    
+    .item-title {
+        font-weight: bold;
+        color: #667eea;
+    }
+    
+    .item-meta {
+        color: #666;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<a href="{% url 'groves_list' %}" style="color: #667eea; text-decoration: none; margin-bottom: 20px; display: inline-block;">← Back to Groves</a>
+
+<div class="grove-header">
+    <h1>{{ grove.name }}</h1>
+    <p>{{ grove.location }}</p>
+    
+    <div class="grove-info">
+        <div class="info-item">
+            <label>Variety</label>
+            <value>{{ grove.get_variety_display }}</value>
+        </div>
+        <div class="info-item">
+            <label>Status</label>
+            <value>{{ grove.get_status_display }}</value>
+        </div>
+        <div class="info-item">
+            <label>Total Trees</label>
+            <value>{{ grove.tree_count }}</value>
+        </div>
+        <div class="info-item">
+            <label>Area (hectares)</label>
+            <value>{{ grove.area_hectares }}</value>
+        </div>
+        <div class="info-item">
+            <label>Planting Year</label>
+            <value>{{ grove.planting_year }}</value>
+        </div>
+        <div class="info-item">
+            <label>Irrigation Type</label>
+            <value>{{ grove.irrigation_type }}</value>
+        </div>
+    </div>
+</div>
+
+{% if grove.notes %}
+<div class="section">
+    <h2>Notes</h2>
+    <p>{{ grove.notes }}</p>
+</div>
+{% endif %}
+
+<div class="section">
+    <h2>Harvests ({{ harvests|length }})</h2>
+    {% if harvests %}
+        <div class="item-list">
+            {% for harvest in harvests %}
+                <div class="item">
+                    <div class="item-title">{{ harvest.harvest_date }} - Grade {{ harvest.quality_grade }}</div>
+                    <div class="item-meta">
+                        Quantity: <strong>{{ harvest.quantity }} kg</strong> | 
+                        Oil Yield: <strong>{{ harvest.oil_yield }}%</strong>
+                    </div>
+                    {% if harvest.notes %}
+                        <div class="item-meta" style="margin-top: 10px;">{{ harvest.notes }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="color: #999;">No harvests recorded yet.</p>
+    {% endif %}
+</div>
+
+<div class="section">
+    <h2>Maintenance Logs ({{ maintenance_logs|length }})</h2>
+    {% if maintenance_logs %}
+        <div class="item-list">
+            {% for log in maintenance_logs %}
+                <div class="item">
+                    <div class="item-title">{{ log.get_task_type_display }} - {{ log.date }}</div>
+                    <div class="item-meta">
+                        {% if log.completed %}
+                            <span style="background: #d4edda; padding: 2px 8px; border-radius: 3px; color: #155724;">Completed</span>
+                        {% else %}
+                            <span style="background: #f8d7da; padding: 2px 8px; border-radius: 3px; color: #721c24;">Pending</span>
+                        {% endif %}
+                        | Cost: <strong>${{ log.cost }}</strong>
+                    </div>
+                    <div class="item-meta" style="margin-top: 10px;">{{ log.description }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="color: #999;">No maintenance logs recorded yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "core/base.html" %}
+
+{% block title %}Dashboard - Olive Project{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+    
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-card h3 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+        opacity: 0.9;
+    }
+    
+    .stat-card .value {
+        font-size: 2.5em;
+        font-weight: bold;
+    }
+    
+    .recent-groves {
+        margin-top: 40px;
+    }
+    
+    .recent-groves h2 {
+        margin-bottom: 20px;
+        color: #667eea;
+    }
+    
+    .grove-item {
+        padding: 15px;
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .grove-item a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .grove-item a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h2>Welcome to Olive Project Dashboard</h2>
+<p>Overview of your olive cultivation operations</p>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Total Groves</h3>
+        <div class="value">{{ total_groves }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Total Trees</h3>
+        <div class="value">{{ total_trees }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Total Harvest (kg)</h3>
+        <div class="value">{{ total_harvest|floatformat:0 }}</div>
+    </div>
+</div>
+
+<div class="recent-groves">
+    <h2>Recent Groves</h2>
+    {% if groves %}
+        {% for grove in groves %}
+            <div class="grove-item">
+                <div>
+                    <strong>{{ grove.name }}</strong>
+                    <p style="color: #666; margin: 5px 0; font-size: 0.9em;">{{ grove.location }} • {{ grove.variety }}</p>
+                </div>
+                <a href="{% url 'grove_detail' grove.id %}" class="btn">View Details</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="color: #999;">No groves yet. <a href="{% url 'admin:index' %}">Create one in the admin panel</a></p>
+    {% endif %}
+</div>
+{% endblock %}
