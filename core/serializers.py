@@ -5,13 +5,13 @@ from .models import Grove, Harvest, MaintenanceLog
 class HarvestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Harvest
-        fields = ['id', 'harvest_date', 'quantity', 'quality_grade', 'oil_yield', 'notes', 'created_at']
+        fields = ['id', 'grove', 'harvest_date', 'quantity', 'quality_grade', 'oil_yield', 'notes', 'created_at']
 
 
 class MaintenanceLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = MaintenanceLog
-        fields = ['id', 'task_type', 'date', 'description', 'cost', 'completed', 'created_at']
+        fields = ['id', 'grove', 'task_type', 'date', 'description', 'cost', 'completed', 'created_at']
 
 
 class GroveSerializer(serializers.ModelSerializer):
