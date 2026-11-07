@@ -14,8 +14,8 @@ A comprehensive Django-based web application for managing olive groves, tracking
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Django 5.2 (supported maintenance releases)
-- **API**: Django REST Framework 3.16
+- **Backend**: Django 6.0.4
+- **API**: Django REST Framework 3.14.0
 - **Database**: SQLite (development) / PostgreSQL (production)
 - **Frontend**: HTML5, CSS3
 - **Server**: Gunicorn
@@ -23,7 +23,7 @@ A comprehensive Django-based web application for managing olive groves, tracking
 ## 📦 Installation
 
 ### Prerequisites
-- Python 3.10+
+- Python 3.8+
 - pip
 - virtualenv (optional but recommended)
 
