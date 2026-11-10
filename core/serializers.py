@@ -5,21 +5,13 @@ from .models import Grove, Harvest, MaintenanceLog
 class HarvestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Harvest
-        fields = [
-            "id", "grove", "harvest_date", "quantity", "quality_grade",
-            "oil_yield", "notes", "created_at",
-        ]
-        read_only_fields = ["id", "created_at"]
+        fields = ['id', 'harvest_date', 'quantity', 'quality_grade', 'oil_yield', 'notes', 'created_at']
 
 
 class MaintenanceLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = MaintenanceLog
-        fields = [
-            "id", "grove", "task_type", "date", "description", "cost",
-            "completed", "created_at",
-        ]
-        read_only_fields = ["id", "created_at"]
+        fields = ['id', 'task_type', 'date', 'description', 'cost', 'completed', 'created_at']
 
 
 class GroveSerializer(serializers.ModelSerializer):
@@ -29,8 +21,7 @@ class GroveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Grove
         fields = [
-            "id", "name", "location", "variety", "tree_count", "area_hectares",
-            "planting_year", "irrigation_type", "soil_type", "status", "notes",
-            "image_url", "created_at", "updated_at", "harvests", "maintenance_logs",
+            'id', 'name', 'location', 'variety', 'tree_count', 'area_hectares',
+            'planting_year', 'irrigation_type', 'soil_type', 'status', 'notes',
+            'image_url', 'created_at', 'updated_at', 'harvests', 'maintenance_logs'
         ]
-        read_only_fields = ["id", "created_at", "updated_at"]
